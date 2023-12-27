@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import {Button} from "react-bootstrap";
 
 class AddUsers extends Component {
     constructor(props) {
@@ -56,11 +57,10 @@ class AddUsers extends Component {
                             <label htmlFor="username">Username</label>
                         </div>
                     </div>
-                    <div className="row">
-                        <button className="waves-effect waves-light btn" type="submit">
+
+                        <Button variant="secondary" type="submit">
                             Submit
-                        </button>
-                    </div>
+                        </Button>
                 </form>
             </div>
         );

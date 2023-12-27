@@ -6,7 +6,7 @@ function App() {
     <div className="container-fluid">
         <nav>
             <div className="nav-wrapper center-align">
-                <a href="/" className="brand-logo"> Users </a>
+                <a href="/" className="align-content-center"> Users </a>
             </div>
         </nav>
         <div className="row">

@@ -1,7 +1,5 @@
 package com.example.models;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -11,21 +9,27 @@ public class BankUser {
     private @Id @GeneratedValue Long id;
     private String firstName;
     private String lastName;
+
+    @Column(unique = true)
     private String username;
     private String pin;
-    private String account;
 
-    public BankUser(){}
+    @OneToOne @JoinColumn
+    private Account account;
 
-    public BankUser(Long id, String firstName, String lastName, String username, String pin, String account){
+    private boolean activeSession;
+
+    public BankUser() {}
+
+    public BankUser(Long id, String firstName, String lastName, String username, String pin, Account account, boolean activeSession){
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.pin = pin;
         this.account = account;
+        this.activeSession = activeSession;
     }
-
 
 }
 
