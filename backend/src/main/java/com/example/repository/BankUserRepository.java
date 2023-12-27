@@ -1,4 +1,4 @@
-package com.example.controllers;
+package com.example.repository;
 
 import com.example.models.BankUser;
 import org.springframework.data.repository.CrudRepository;
