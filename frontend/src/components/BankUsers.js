@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import AddUsers from "./AddUsers";
 import SingleUsers from './SingleUsers';
+import ATMRegister from "./ATMRegister";
 export default class BankUsers extends Component {
     constructor(props) {
         super(props);
@@ -19,7 +19,7 @@ export default class BankUsers extends Component {
         return (
             <div>
                 <div className="row">
-                    <AddUsers />
+                    {/*<AddUsers />*/}
                 </div>
                 <div className="row">
                     {this.state.bankUsers.map((item) => (
