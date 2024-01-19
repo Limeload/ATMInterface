@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Form, Row} from 'react-bootstrap';
-import {Link} from "react-router-dom";
+import {Link , withRouter} from "react-router-dom";
 import login from "../images/login.png"
 
 class ATMLogin extends Component {
@@ -22,9 +22,9 @@ class ATMLogin extends Component {
             if (!response.ok) {
                 throw new Error("Failed to fetch user");
             }
-
             const user = await response.json();
             console.log("Fetched user:", user);
+            this.props.history.push("/dashboard");
         } catch (error) {
             console.error("Error fetching user:", error);
         }
@@ -75,4 +75,4 @@ class ATMLogin extends Component {
    }
 }
 
-export default ATMLogin;
+export default withRouter(ATMLogin);
