@@ -10,13 +10,11 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Logout from "./Logout";
-import FetchUser from "./FetchUser";
+
 
 class Dashboard extends Component {
    render() {
-       const { user } = this.props;
        return (
-           <FetchUser>
                <div className="dashboard">
                    <Container>
                        <div className="dashboard-header">
@@ -38,7 +36,7 @@ class Dashboard extends Component {
                            <Card>
                                <Card.Body>
                                    <p>What would you like to do today?</p>
-                                   <h2> Welcome, {user.firstName}!</h2>
+                                   <h2> Welcome, !</h2>
                                    <br/>
                                    <p>Your Remaining Balance</p>
                                    <Card.Text>$ 5000</Card.Text>
@@ -134,7 +132,6 @@ class Dashboard extends Component {
                        <Logout/>
                    </Container>
                </div>
-           </FetchUser>
 
        )
    }
