@@ -1,156 +1,146 @@
-import React, { Component } from "react";
-import {Col, Form, Row} from "react-bootstrap";
-import register from "../images/register.png";
-import {Link} from "react-router-dom";
+import React, { Component } from 'react'
+import { Col, Form, Row } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import register from '../images/register.png'
 
 class ATMRegister extends Component {
-    constructor(props) {
-        super(props);
-        this.firstNameRef = React.createRef();
-        this.lastNameRef = React.createRef();
-        this.usernameRef = React.createRef();
-        this.pinRefs = Array.from({length: 4}, (_, i) => React.createRef());
-        this.confirmPinRefs = Array.from({ length: 4 }, (_, i) => React.createRef());
-        this.accountRef = React.createRef();
-        this.confirmAccountRef = React.createRef();
+  constructor(props) {
+    super(props)
+    this.firstNameRef = React.createRef()
+    this.lastNameRef = React.createRef()
+    this.usernameRef = React.createRef()
+    this.pinRefs = Array.from({ length: 4 }, (_, i) => React.createRef())
+    this.confirmPinRefs = Array.from({ length: 4 }, (_, i) => React.createRef())
+    this.accountRef = React.createRef()
+    this.confirmAccountRef = React.createRef()
+  }
+
+  submitUsers = async (e) => {
+    e.preventDefault()
+    const pin = this.pinRefs.map((r) => r.current.value).join('')
+    const confirmPin = this.confirmPinRefs.map((r) => r.current.value).join('')
+    const account = this.accountRef.current.value
+    const confirmAccount = this.confirmAccountRef.current.value
+
+    if (pin !== confirmPin) return alert('PINs do not match')
+    if (account !== confirmAccount) return alert('Account numbers do not match')
+
+    const bankUser = {
+      firstName: this.firstNameRef.current.value,
+      lastName: this.lastNameRef.current.value,
+      username: this.usernameRef.current.value,
+      pin,
+      account,
     }
 
-    submitUsers = async (e) => {
-        e.preventDefault();
-        const pin = this.pinRefs.map((ref) => ref.current.value).join("");
-        const confirmPin = this.confirmPinRefs.map((ref) => ref.current.value).join("");
-        const account = this.accountRef.current.value;
-        const confirmAccount = this.confirmAccountRef.current.value;
+    try {
+      const res = await fetch('http://localhost:8080/api/bankUsers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(bankUser),
+      })
+      if (!res.ok) throw new Error('Error submitting user')
+      window.location.reload()
+    } catch (error) {
+      console.error('Error submitting user:', error)
+    }
+  }
 
-        // Check if passcode and account number match their confirmations
-        if (pin !== confirmPin) {
-            alert("Passcode and confirm passcode do not match.");
-            return;
-        }
+  render() {
+    return (
+      <div className='atm-page'>
+        <motion.div
+          className='atm-card'
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+        >
+          <img src={register} alt='ATM Register' className='atm-img' />
+          <h2 className='atm-title'>Create Account</h2>
 
-        if (account !== confirmAccount) {
-            alert("Account number and confirm account number do not match.");
-            return;
-        }
-        const bankUser = {
-            firstName: this.firstNameRef.current.value,
-            lastName: this.lastNameRef.current.value,
-            username: this.usernameRef.current.value,
-            pin: this.pinRefs.map((ref) => ref.current.value).join(""),
-            account: this.accountRef.current.value,
-        };
-        try {
-            const response = await fetch("http://localhost:8080/api/bankUsers", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(bankUser),
-            });
+          <Form onSubmit={this.submitUsers} className='atm-form'>
+            <Row>
+              <Col>
+                <Form.Control
+                  type='text'
+                  placeholder='First Name'
+                  ref={this.firstNameRef}
+                  className='atm-input'
+                />
+              </Col>
+              <Col>
+                <Form.Control
+                  type='text'
+                  placeholder='Last Name'
+                  ref={this.lastNameRef}
+                  className='atm-input'
+                />
+              </Col>
+            </Row>
 
-            if (!response.ok) {
-                this.setError("Failed to submit user");
-                return;
-            }
+            <Form.Control
+              type='text'
+              placeholder='Username'
+              ref={this.usernameRef}
+              className='atm-input mt-3'
+            />
 
-            await response.json();
-            window.location.reload();
-        } catch (error) {
-            console.error("Error submitting user:", error);
-            this.setError("Error submitting user. Please try again.");
-        }
-    };
+            <div className='pin-group'>
+              <p>Create PIN</p>
+              <div className='pin-inputs'>
+                {this.pinRefs.map((ref, i) => (
+                  <Form.Control
+                    key={i}
+                    className='pin-box'
+                    type='password'
+                    ref={ref}
+                    maxLength='1'
+                    placeholder='•'
+                  />
+                ))}
+              </div>
 
-    setError = (errorMessage) => {
-        this.setState({
-            error: errorMessage,
-        });
-    };
-
-    render() {
-        return (
-            <div className="login">
-                <Form className="mb-3" onSubmit={this.submitUsers}>
-                    <Row>
-                        <img className="form-img" src={register} alt={register}/>
-                        <Col>
-                            <Form.Control type="text"
-                                          ref={this.firstNameRef}
-                                          placeholder="First name"
-                                          className="validate"
-                            />
-                        </Col>
-                        <Col>
-                            <Form.Control type="text"
-                                          ref={this.lastNameRef}
-                                          placeholder="Last name" className="validate"
-                            />
-                        </Col>
-                    </Row>
-                    <br />
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control type="text"
-                                      ref={this.usernameRef}
-                                      placeholder="Enter username"
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicPassword">
-                        <Form.Text className="text-muted">
-                            Create your security pin
-                        </Form.Text>
-                        <div className="passcode-entry">
-                            {this.pinRefs.map((ref, index) => (
-                                <Form.Control
-                                    key={index}
-                                    className="passcode-input"
-                                    type="text"
-                                    ref={ref}
-                                    maxLength="1"
-                                    placeholder="•"
-                                />
-                            ))}
-                        </div>
-                        <Form.Text className="text-muted">
-                            Confirm your security pin
-                        </Form.Text>
-                        <div className="passcode-entry">
-                            {this.confirmPinRefs.map((ref, index) => (
-                                <Form.Control
-                                    key={index}
-                                    className="passcode-input"
-                                    type="text"
-                                    ref={ref}
-                                    maxLength="1"
-                                    placeholder="•"
-                                />
-                            ))}
-                        </div>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicAccount">
-                        <Form.Control
-                            type="text"
-                            ref={this.accountRef}
-                            placeholder="Enter account number"
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="formBasicConfirmAccount">
-                        <Form.Control
-                            type="text"
-                            ref={this.confirmAccountRef}
-                            placeholder="Confirm account number"
-                        />
-                    </Form.Group>
-                    <button className="btn-default" type="submit">
-                        Register
-                    </button>
-                </Form>
-                <br/>
-                <div>
-                    Already have an account? <Link exact to='/login'>Login instead</Link>
-                </div>
+              <p>Confirm PIN</p>
+              <div className='pin-inputs'>
+                {this.confirmPinRefs.map((ref, i) => (
+                  <Form.Control
+                    key={i}
+                    className='pin-box'
+                    type='password'
+                    ref={ref}
+                    maxLength='1'
+                    placeholder='•'
+                  />
+                ))}
+              </div>
             </div>
-        );
-    }
+
+            <Form.Control
+              type='text'
+              placeholder='Account Number'
+              ref={this.accountRef}
+              className='atm-input mt-3'
+            />
+            <Form.Control
+              type='text'
+              placeholder='Confirm Account Number'
+              ref={this.confirmAccountRef}
+              className='atm-input mt-2'
+            />
+
+            <button className='atm-btn mt-3' type='submit'>
+              Register
+            </button>
+          </Form>
+
+          <p className='atm-text'>
+            Already have an account? <Link to='/login'>Login instead</Link>
+          </p>
+        </motion.div>
+      </div>
+    )
+  }
 }
 
-export default ATMRegister;
+export default ATMRegister
