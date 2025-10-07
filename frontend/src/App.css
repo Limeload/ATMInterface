@@ -2,10 +2,9 @@
   font-family: Cantarell, sans-serif;
 }
 
-
 .btn-default {
-  background-color: #FF725E; /* Default color */
-  border-color: #FF725E;
+  background-color: #ff725e; /* Default color */
+  border-color: #ff725e;
   padding: 0.375rem 0.75rem;
   text-align: center;
   vertical-align: middle;
@@ -14,12 +13,13 @@
   font-weight: 400;
   line-height: 1.5;
   border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease;
 }
 
 .btn-default:hover {
-  background-color: #FF725E; /* Hover color */
-  border-color: #FF725E;
+  background-color: #ff725e; /* Hover color */
+  border-color: #ff725e;
 }
 
 .login {
@@ -62,3 +62,108 @@
   margin: auto;
 }
 
+/* === ATM Modern Flat UI (Exactly like the image) === */
+
+/* === ATM Modern Flat UI === */
+.atm-page {
+  background: linear-gradient(145deg, #0b2846, #122f5b);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.atm-card {
+  background-color: #1e3a5f;
+  padding: 2.5rem;
+  border-radius: 20px;
+  width: 420px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.atm-img {
+  width: 100px;
+  margin-bottom: 1rem;
+}
+
+.atm-title {
+  font-weight: 600;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+
+.atm-form {
+  text-align: left;
+}
+
+.atm-input {
+  border-radius: 12px;
+  padding: 0.75rem;
+  border: none;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.atm-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #ff725e;
+}
+
+.pin-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 0.5rem;
+}
+
+.pin-box {
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  font-size: 20px;
+  border-radius: 10px;
+  border: none;
+}
+
+.atm-btn {
+  background-color: #ff725e;
+  border: none;
+  color: white;
+  padding: 0.75rem 2rem;
+  border-radius: 12px;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.atm-btn:hover {
+  background-color: #ff5a42;
+}
+
+.atm-text {
+  margin-top: 1.2rem;
+  color: #cfd8e3;
+}
+
+.atm-text a {
+  color: #ff725e;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.atm-text a:hover {
+  text-decoration: underline;
+}
+
+.atm-muted {
+  color: #b3c3d8 !important;
+  font-size: 0.85rem;
+  display: block;
+  margin-top: 4px;
+}
