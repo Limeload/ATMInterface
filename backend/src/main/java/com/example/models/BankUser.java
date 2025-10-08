@@ -1,10 +1,14 @@
 package com.example.models;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
 @Data
-
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BankUser {
     private @Id @GeneratedValue Long id;
     private String firstName;
@@ -12,12 +16,20 @@ public class BankUser {
 
     @Column(unique = true)
     private String username;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pin;
 
-    @OneToOne @JoinColumn
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id")
+    @JsonManagedReference
     private Account account;
 
     private boolean activeSession;
+
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String sessionToken;
 
     public BankUser() {}
 
@@ -30,7 +42,4 @@ public class BankUser {
         this.account = account;
         this.activeSession = activeSession;
     }
-
 }
-
-

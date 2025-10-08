@@ -6,4 +6,8 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource
 public interface BankUserRepository extends CrudRepository<BankUser, Long> {
+
+	java.util.Optional<BankUser> findByUsername(String username);
+
+	java.util.Optional<BankUser> findFirstByActiveSessionTrue();
 }

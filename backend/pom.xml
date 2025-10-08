@@ -41,6 +41,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- For BCrypt hashing without enabling full Spring Security auto-configuration -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -6,11 +6,11 @@ import com.example.models.Transaction;
 import com.example.repository.AccountRepository;
 import com.example.repository.BankUserRepository;
 import com.example.repository.TransactionRepository;
+import com.example.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 @RestController
@@ -21,11 +21,16 @@ public class ApplicationController {
     private final BankUserRepository bankUserRepository;
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
-
-    public ApplicationController(BankUserRepository bankUserRepository, AccountRepository accountRepository, TransactionRepository transactionRepository) {
+    private final AuthService authService;
+    
+    public ApplicationController(BankUserRepository bankUserRepository, 
+                                AccountRepository accountRepository, 
+                                TransactionRepository transactionRepository, 
+                                AuthService authService) {
         this.bankUserRepository = bankUserRepository;
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
+        this.authService = authService;
     }
 
     // BankUser endpoints
@@ -35,9 +40,20 @@ public class ApplicationController {
     }
 
     @PostMapping("/bankUsers")
-    ResponseEntity<BankUser> createBankUser(@Validated @RequestBody BankUser bankUser) throws URISyntaxException {
+    ResponseEntity<BankUser> createBankUser(@Validated @RequestBody BankUser bankUser) {
+        // Hash pin before saving
+        if (bankUser.getPin() != null) {
+            bankUser.setPin(authService.hashPin(bankUser.getPin()));
+        }
+
+        // If account is present, set bidirectional relationship
+        if (bankUser.getAccount() != null) {
+            bankUser.getAccount().setOwner(bankUser);
+        }
+
+        // Save bankUser - cascade will automatically save the account
         BankUser result = bankUserRepository.save(bankUser);
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
 
     // Account endpoints
@@ -47,9 +63,9 @@ public class ApplicationController {
     }
 
     @PostMapping("/accounts")
-    ResponseEntity<Account> createAccount(@Validated @RequestBody Account account) throws URISyntaxException {
+    ResponseEntity<Account> createAccount(@Validated @RequestBody Account account) {
         Account result = accountRepository.save(account);
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
 
     // Transaction endpoints
@@ -59,8 +75,8 @@ public class ApplicationController {
     }
 
     @PostMapping("/transactions")
-    ResponseEntity<Transaction> createTransaction(@Validated @RequestBody Transaction transaction) throws URISyntaxException {
+    ResponseEntity<Transaction> createTransaction(@Validated @RequestBody Transaction transaction) {
         Transaction result = transactionRepository.save(transaction);
-        return ResponseEntity.ok().body(result);
+        return ResponseEntity.ok(result);
     }
 }

@@ -13,18 +13,34 @@ class ATMLogin extends Component {
 
   submitLogin = async (e) => {
     e.preventDefault()
-    const bankUser = {
+    const loginData = {
       username: this.usernameRef.current.value,
       pin: this.pinRefs.map((ref) => ref.current.value).join(''),
     }
+    
     try {
-      const response = await fetch(`http://localhost:8080/api/bankUsers`)
-      if (!response.ok) throw new Error('Failed to fetch user')
-      const user = await response.json()
-      console.log('Fetched user:', user)
-      this.props.history.push('/dashboard')
+      const response = await fetch('http://localhost:8080/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+      })
+      
+      if (response.ok) {
+        const user = await response.json()
+        // Store user session in localStorage
+        localStorage.setItem('atmUser', JSON.stringify(user))
+        localStorage.setItem('atmToken', user.sessionToken)
+        console.log('Login successful:', user)
+        this.props.history.push('/dashboard')
+      } else {
+        const errorMsg = await response.text()
+        alert('Login failed: ' + errorMsg)
+      }
     } catch (error) {
-      console.error('Error fetching user:', error)
+      console.error('Login error:', error)
+      alert('Login failed. Please try again.')
     }
   }
 

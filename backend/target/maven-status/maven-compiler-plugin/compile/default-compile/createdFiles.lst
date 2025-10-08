@@ -1,12 +1,15 @@
+com/example/dto/LoginRequest.class
 com/example/models/Transaction.class
 com/example/repository/AccountRepository.class
 com/example/controllers/PinController.class
+com/example/services/AuthService.class
+com/example/dto/LoginResponse.class
 com/example/BackendApplication.class
 com/example/ApplicationLoader.class
 com/example/models/Account.class
 com/example/repository/TransactionRepository.class
 com/example/repository/BankUserRepository.class
-com/example/models/BankUser.class
 com/example/controllers/ApplicationController.class
+com/example/models/BankUser.class
 com/example/controllers/SessionController.class
 com/example/models/ATMService.class
