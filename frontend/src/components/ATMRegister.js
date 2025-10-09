@@ -31,7 +31,10 @@ class ATMRegister extends Component {
       lastName: this.lastNameRef.current.value,
       username: this.usernameRef.current.value,
       pin,
-      account,
+      account: {
+        account_number: account,
+        balance: 0.0
+      },
     }
 
     try {
@@ -41,9 +44,11 @@ class ATMRegister extends Component {
         body: JSON.stringify(bankUser),
       })
       if (!res.ok) throw new Error('Error submitting user')
-      window.location.reload()
+      alert('Registration successful! Please login with your credentials.')
+      window.location.href = '/login'
     } catch (error) {
       console.error('Error submitting user:', error)
+      alert('Registration failed. Please try again.')
     }
   }
 

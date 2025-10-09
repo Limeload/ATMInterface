@@ -1,11 +1,12 @@
 package com.example.models;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import lombok.Data;
 
 @Entity
 @Data
-
 public class Account {
     private @Id @GeneratedValue Long id;
     @Column(unique = true)
@@ -13,8 +14,9 @@ public class Account {
 
     private double balance;
 
-    @ManyToOne
-    @JoinColumn
+    // Inverse side of the one-to-one relationship declared in BankUser
+    @OneToOne(mappedBy = "account")
+    @JsonBackReference
     private BankUser owner;
 
     public Account(){}
